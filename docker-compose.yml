@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  loraluxd:
+    build:
+      context: .
+      dockerfile: ./cmd/loraluxd/deploy/Dockerfile
+    environment:
+      - LORALUX_LOG_LEVEL
+      - LORALUX_SERVER_ADDRESS
+      - LORALUX_SCRAPE_ENDPOINT
+      - LORALUX_SCRAPE_INTERVAL
+      - LORALUX_READ_TIMEOUT
+    restart: on-failure
+    network_mode: host
+    depends_on:
+      - testserverd
+  testserverd:
+    build:
+      context: .
+      dockerfile: ./cmd/testserverd/deploy/Dockerfile
+    ports:
+      - "8080:8080"
+    restart: on-failure
